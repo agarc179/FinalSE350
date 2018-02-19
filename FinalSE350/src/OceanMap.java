@@ -1,0 +1,77 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+public class OceanMap {
+
+	int scalingFactor = 50;
+	int N;
+	int[][] oceanGrid = new int[10][10];
+	ArrayList<Rectangle> islands = new ArrayList<Rectangle>();
+	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
+
+	// constructor
+	public OceanMap(int mapSize) {
+		N = mapSize;
+		buildIslands();
+	}
+
+	// Return generated map
+	public int[][] getMap(){
+		return oceanGrid; // Where hopefully “myGrid” has a more meaningful name.
+	}
+
+	// returns the value of the Coordinate
+	public int getCoordinateValue(int x, int y) {
+		return oceanGrid[x][y];
+	}
+
+	// returns ArrayList of Islands
+	public ArrayList<Rectangle> getIslands(){
+		return islands;
+	}
+
+	// sets island with coordinates and value of 1. It adds each island to ArrayList
+	private void setIsland(int x, int y) {
+		Rectangle island = new Rectangle(scalingFactor,scalingFactor,scalingFactor,scalingFactor);
+		island.setX(x);
+		island.setY(y);
+		oceanGrid[x][y] = 1;
+		island.setStroke(Color.BLACK); // We want the black outline
+		island.setFill(Color.GREEN); // Green square
+		islands.add(island);
+	}
+
+	// builds 10 Islands
+	private void buildIslands() {
+
+		Random rand = new Random();
+		int islandCounter = 0;
+
+		while(islandCounter < 10) {
+			int randX = rand.nextInt(N); // random X coordinate between index [0..9]
+			int randY = rand.nextInt(N); // random Y coordinate between index [0..9]
+			if(islandsCoordinates.containsKey(randX + "," + randY) == false) {
+				islandsCoordinates.put(randX + "," + randY , 1);
+				setIsland(randX, randY);
+				islandCounter++;
+			}
+		}
+	}
+
+	// prints the board (for testing purposes)
+	public void displayMap() {
+		System.out.println();
+		for(int i = 0; i < oceanGrid.length; i++) {
+			for(int j = 0; j < oceanGrid[1].length;  j++) {
+				System.out.print(oceanGrid[j][i] + " ");
+
+			}
+			System.out.println();	
+		}
+	}
+}
