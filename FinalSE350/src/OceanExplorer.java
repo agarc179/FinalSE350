@@ -115,7 +115,7 @@ public class OceanExplorer extends Application  {
 
 	public void start(Stage oceanStage) throws Exception {
 
-		oceanMap = new OceanMap(dimensions);
+		oceanMap = OceanMap.getInstance(dimensions);
 		islandMap = oceanMap.getMap();
 
 		root = new AnchorPane();

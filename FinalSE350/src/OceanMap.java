@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class OceanMap {
-
+	private static OceanMap uniqueInstance;
 	int scalingFactor = 50;
 	int N;
 	int[][] oceanGrid = new int[10][10];
@@ -15,14 +15,21 @@ public class OceanMap {
 	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
 
 	// constructor
-	public OceanMap(int mapSize) {
+	private OceanMap(int mapSize) {				
 		N = mapSize;
 		buildIslands();
 	}
+		
+	public static OceanMap getInstance(int size) {
+		if(uniqueInstance == null) {
+			uniqueInstance = new OceanMap(size);
 
+		}
+		return uniqueInstance;
+	}
 	// Return generated map
 	public int[][] getMap(){
-		return oceanGrid; // Where hopefully “myGrid” has a more meaningful name.
+		return oceanGrid; // Where hopefully has a more meaningful name.
 	}
 
 	// returns the value of the Coordinate
@@ -54,7 +61,9 @@ public class OceanMap {
 
 		while(islandCounter < 10) {
 			int randX = rand.nextInt(N); // random X coordinate between index [0..9]
+			System.out.println(randX);
 			int randY = rand.nextInt(N); // random Y coordinate between index [0..9]
+			System.out.println(randY);
 			if(islandsCoordinates.containsKey(randX + "," + randY) == false) {
 				islandsCoordinates.put(randX + "," + randY , 1);
 				setIsland(randX, randY);
