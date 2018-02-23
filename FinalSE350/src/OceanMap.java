@@ -8,9 +8,10 @@ import javafx.scene.shape.Rectangle;
 
 public class OceanMap {
 
-	int scalingFactor = 50;
+	int dimensions = 28;
+	int scalingFactor = 25;
 	int N;
-	int[][] oceanGrid = new int[10][10];
+	int[][] oceanGrid = new int[dimensions][dimensions];
 	ArrayList<Rectangle> islands = new ArrayList<Rectangle>();
 	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
 
