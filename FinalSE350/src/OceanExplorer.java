@@ -15,13 +15,10 @@ import javafx.stage.Stage;
 
 public class OceanExplorer extends Application  {
 
-<<<<<<< HEAD
+
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
-=======
-	final int dimensions = 28; // creating a 10x10 maps
-	final int scale = 25; // Scale everything by 50. You can experiment here.
->>>>>>> singleton
+
 	Pane root; 
 	Ship ship;
 	PirateShip pirateShip;
@@ -40,10 +37,9 @@ public class OceanExplorer extends Application  {
 	int[][] islandMap;
 	ArrayList<PirateShip> pirateShipList = new ArrayList<PirateShip>();
 	
-	
 	public void start(Stage oceanStage) throws Exception {
 
-		oceanMap = new OceanMap(dimensions);
+		oceanMap = OceanMap.getInstance(dimensions);
 		islandMap = oceanMap.getMap();
 
 		root = new AnchorPane();
@@ -63,7 +59,6 @@ public class OceanExplorer extends Application  {
 		
 		loadGameOverImage(); //loads the game over image
 		
-		
 		scene = new Scene(root, 700, 700);
 		oceanStage.setScene(scene);
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
@@ -71,6 +66,8 @@ public class OceanExplorer extends Application  {
 		startSailing();
 
 	}
+	
+	
 
 	public void drawMap() {
 		for(int x = 0; x < dimensions; x++){
@@ -152,40 +149,7 @@ public class OceanExplorer extends Application  {
 
 	}
 
-<<<<<<< HEAD
-	
-=======
-	public void start(Stage oceanStage) throws Exception {
 
-		oceanMap = OceanMap.getInstance(dimensions);
-		islandMap = oceanMap.getMap();
-
-		root = new AnchorPane();
-		drawMap();
-		drawIslands(oceanMap.getIslands()); // draws the islands
-
-		ship = new Ship(oceanMap); // ship object
-		loadShipImage(); // loads the ship image
-		
-		pirateShip = new PirateShip(oceanMap); // first pirate ship object
-		ship.registerObserver(pirateShip);
-		
-		pirateShip2 = new PirateShip(oceanMap); // second pirate ship object
-		ship.registerObserver(pirateShip2);
-		
-		loadPirateShipImage(); // loads the pirate ship images
-		
-		loadGameOverImage(); //loads the game over image
-		
-		scene = new Scene(root, 700, 700);
-		oceanStage.setScene(scene);
-		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
-		oceanStage.show();
-		startSailing();
-
-	}
-
->>>>>>> singleton
 	// Handler for the ship
 	private void startSailing() {
 		// Create a keypressed handler

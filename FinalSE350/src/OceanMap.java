@@ -7,18 +7,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class OceanMap {
-<<<<<<< HEAD
 
-	int dimensions = 28;
-	int scalingFactor = 25;
-	int N;
-	int[][] oceanGrid = new int[dimensions][dimensions];
-=======
 	private static OceanMap uniqueInstance;
 	int scalingFactor = 25;
 	int N;
 	int[][] oceanGrid = new int[28][28];
->>>>>>> singleton
+
 	ArrayList<Rectangle> islands = new ArrayList<Rectangle>();
 	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
 
