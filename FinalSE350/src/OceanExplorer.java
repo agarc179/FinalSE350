@@ -15,9 +15,8 @@ import javafx.stage.Stage;
 
 public class OceanExplorer extends Application  {
 
-	final int dimensions = 10; // creating a 10x10 maps
-	final int scale = 50; // Scale everything by 50. You can experiment here.
-	final int scalingFactor = 50; 
+	final int dimensions = 28; // creating a 10x10 maps
+	final int scale = 25; // Scale everything by 50. You can experiment here.
 	Pane root; 
 	Ship ship;
 	PirateShip pirateShip;
@@ -58,7 +57,7 @@ public class OceanExplorer extends Application  {
 
 	public void loadShipImage() {
 		// Load the ship image
-		shipImage = new Image("ship.png", 50, 50, true, true);
+		shipImage = new Image("ship.png", scale, scale, true, true);
 		shipImageView = new ImageView(shipImage);
 		shipImageView.setX(ship.getShipLocation().x * scale);
 		shipImageView.setY(ship.getShipLocation().y * scale);
@@ -70,14 +69,14 @@ public class OceanExplorer extends Application  {
 
 	public void loadPirateShipImage() {
 		// Load the pirate ship image
-		pirateShipImage =  new Image("pirate_ship.png", 50, 50, true,true);
+		pirateShipImage =  new Image("pirate_ship.png", scale, scale, true,true);
 		pirateShipImageView = new ImageView(pirateShipImage);
 		pirateShipImageView.setX(pirateShip.getPirateShipLocation().x * scale);
 		pirateShipImageView.setY(pirateShip.getPirateShipLocation().y * scale);
 		oceanMap.oceanGrid[pirateShip.getPirateShipLocation().x][pirateShip.getPirateShipLocation().y] = 2;
 		
 		// Load the pirate ship 2 image
-		pirateShipImage2 =  new Image("pirate_ship.png", 50, 50, true,true);
+		pirateShipImage2 =  new Image("pirate_ship.png", scale, scale, true,true);
 		pirateShipImageView2 = new ImageView(pirateShipImage2);
 		pirateShipImageView2.setX(pirateShip2.getPirateShipLocation2().x * scale);
 		pirateShipImageView2.setY(pirateShip2.getPirateShipLocation2().y * scale);
@@ -90,7 +89,7 @@ public class OceanExplorer extends Application  {
 	
 	// method to load the game over image
 	public void loadGameOverImage() {
-		gameOverImage = new Image("game_over.png", 50, 50, true, true);
+		gameOverImage = new Image("game_over.png", scale, scale, true, true);
 		gameOverImageView = new ImageView(gameOverImage);
 		gameOverImageView.setX(pirateShip.getPirateShipLocation().x * scale);
 		gameOverImageView.setY(pirateShip.getPirateShipLocation().y * scale);
@@ -135,7 +134,7 @@ public class OceanExplorer extends Application  {
 		
 		loadGameOverImage(); //loads the game over image
 		
-		scene = new Scene(root, 500, 500);
+		scene = new Scene(root, 700, 700);
 		oceanStage.setScene(scene);
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
 		oceanStage.show();

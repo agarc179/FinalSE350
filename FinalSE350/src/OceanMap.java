@@ -8,9 +8,9 @@ import javafx.scene.shape.Rectangle;
 
 public class OceanMap {
 	private static OceanMap uniqueInstance;
-	int scalingFactor = 50;
+	int scalingFactor = 25;
 	int N;
-	int[][] oceanGrid = new int[10][10];
+	int[][] oceanGrid = new int[28][28];
 	ArrayList<Rectangle> islands = new ArrayList<Rectangle>();
 	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
 
@@ -61,9 +61,7 @@ public class OceanMap {
 
 		while(islandCounter < 10) {
 			int randX = rand.nextInt(N); // random X coordinate between index [0..9]
-			System.out.println(randX);
 			int randY = rand.nextInt(N); // random Y coordinate between index [0..9]
-			System.out.println(randY);
 			if(islandsCoordinates.containsKey(randX + "," + randY) == false) {
 				islandsCoordinates.put(randX + "," + randY , 1);
 				setIsland(randX, randY);
