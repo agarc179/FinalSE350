@@ -7,23 +7,37 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class OceanMap {
+<<<<<<< HEAD
 
 	int dimensions = 28;
 	int scalingFactor = 25;
 	int N;
 	int[][] oceanGrid = new int[dimensions][dimensions];
+=======
+	private static OceanMap uniqueInstance;
+	int scalingFactor = 25;
+	int N;
+	int[][] oceanGrid = new int[28][28];
+>>>>>>> singleton
 	ArrayList<Rectangle> islands = new ArrayList<Rectangle>();
 	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
 
 	// constructor
-	public OceanMap(int mapSize) {
+	private OceanMap(int mapSize) {				
 		N = mapSize;
 		buildIslands();
 	}
+		
+	public static OceanMap getInstance(int size) {
+		if(uniqueInstance == null) {
+			uniqueInstance = new OceanMap(size);
 
+		}
+		return uniqueInstance;
+	}
 	// Return generated map
 	public int[][] getMap(){
-		return oceanGrid; // Where hopefully “myGrid” has a more meaningful name.
+		return oceanGrid; // Where hopefully has a more meaningful name.
 	}
 
 	// returns the value of the Coordinate
