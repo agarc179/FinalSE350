@@ -1,15 +1,17 @@
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Ship implements Subject {
+public class Ship implements Subject, Power {
 
 	int xCell;
 	int yCell;
 	OceanMap oceanMap;
 
 	List<Observer> observers = new LinkedList<Observer>();
+	ArrayList<SpecialPowerDecorator> decoratorList = new ArrayList<SpecialPowerDecorator>();
 	
 	// constructor
 	public Ship(OceanMap oceanMap) {
@@ -65,6 +67,10 @@ public class Ship implements Subject {
 		}
 		notifyObserver();
 	}
+	
+	public void addDecorator(SpecialPowerDecorator specialItem) {
+		decoratorList.add(specialItem);
+	}
 
 	@Override
 	public void registerObserver(Observer o) {
@@ -86,6 +92,17 @@ public class Ship implements Subject {
 			pirateShipObserver.update(this);
 		}
 
+	}
+
+	@Override
+	public String getDescription() {
+		return "Ship";
+	}
+
+	@Override
+	// No power
+	public void power() {
+		// TODO Auto-generated method stub	
 	}
 
 }

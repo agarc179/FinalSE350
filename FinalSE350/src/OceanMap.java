@@ -31,7 +31,7 @@ public class OceanMap {
 	}
 	// Return generated map
 	public int[][] getMap(){
-		return oceanGrid; // Where hopefully has a more meaningful name.
+		return oceanGrid;
 	}
 
 	// returns the value of the Coordinate

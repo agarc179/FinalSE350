@@ -18,52 +18,38 @@ public class OceanExplorer extends Application  {
 
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
-
 	Pane root; 
 	Ship ship;
-	PirateShip pirateShip;
-	PirateShip pirateShip2;
+	PirateShip pirateShip, pirateShip2;
+	Coin coin;
 	Scene scene;
-	Image shipImage;
-	ImageView shipImageView;
-	Image pirateShipImage;
-	ImageView pirateShipImageView;
-	Image pirateShipImage2;
-	ImageView pirateShipImageView2;
-	Image gameOverImage;
-	ImageView gameOverImageView;
-	OceanMap oceanMap;
+	Image shipImage, pirateShipImage, pirateShipImage2, gameOverImage, coinImage;
+	ImageView shipImageView, pirateShipImageView, pirateShipImageView2, gameOverImageView, coinImageView;
+	OceanMap oceanMap = OceanMap.getInstance(dimensions);
 	boolean endGame = false;
 	int[][] islandMap;
-	ArrayList<PirateShip> pirateShipList = new ArrayList<PirateShip>();
 	
 	public void start(Stage oceanStage) throws Exception {
 
-		oceanMap = OceanMap.getInstance(dimensions);
-		islandMap = oceanMap.getMap();
-
 		root = new AnchorPane();
-		drawMap();
-		drawIslands(oceanMap.getIslands()); // draws the islands
-
-		ship = new Ship(oceanMap); // ship object
-		loadShipImage(); // loads the ship image
-		
-		pirateShip = new PirateShip(oceanMap); // first pirate ship object
-		ship.registerObserver(pirateShip);
-		
-		pirateShip2 = new PirateShip(oceanMap); // second pirate ship object
-		ship.registerObserver(pirateShip2);
-		
-		loadPirateShipImage(); // loads the pirate ship images
-		
-		loadGameOverImage(); //loads the game over image
-		
 		scene = new Scene(root, 700, 700);
 		oceanStage.setScene(scene);
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
 		oceanStage.show();
 		startSailing();
+		
+		islandMap = oceanMap.getMap();
+		drawMap();
+		drawIslands(oceanMap.getIslands()); // draws the islands
+		
+		placeShip();
+		placePirateShips();
+		placeTreasures();
+		
+		loadShipImage(); // loads the ship image
+		loadPirateShipImage(); // loads the pirate ship images
+		loadTreasuresImage();
+		loadGameOverImage(); //loads the game over image
 
 	}
 	
@@ -87,6 +73,22 @@ public class OceanExplorer extends Application  {
 			island.setY(island.getY()*scale);
 			root.getChildren().add(island);
 		}
+	}
+	
+	public void placeShip() {
+		ship = new Ship(oceanMap); // ship object
+	}
+	
+	public void placePirateShips() {
+		pirateShip = new PirateShip(oceanMap); // first pirate ship object
+		ship.registerObserver(pirateShip);
+		
+		pirateShip2 = new PirateShip(oceanMap); // second pirate ship object
+		ship.registerObserver(pirateShip2);
+	}
+	
+	public void placeTreasures() {
+		coin = new Coin(ship);	
 	}
 
 	public void loadShipImage() {
@@ -121,6 +123,15 @@ public class OceanExplorer extends Application  {
 		root.getChildren().add(pirateShipImageView2); // set current pirate ship 2 image (ImageView) to the Pane
 	}
 	
+	public void loadTreasuresImage() {
+		coinImage = new Image("coin.png", scale, scale, true, true);
+		coinImageView = new ImageView(coinImage);
+		coinImageView.setX(coin.getCoinLocation().x * scale);
+		coinImageView.setY(coin.getCoinLocation().y * scale);
+		
+		root.getChildren().add(coinImageView);
+	}
+	
 	// method to load the game over image
 	public void loadGameOverImage() {
 		gameOverImage = new Image("game_over.png", scale, scale, true, true);
@@ -129,7 +140,6 @@ public class OceanExplorer extends Application  {
 		gameOverImageView.setY(pirateShip.getPirateShipLocation().y * scale);
 	}
 	
-
 	
 	// this will set the Game over image (ImageView) to the Pane.
 	protected void setGameOverImage() {
@@ -144,15 +154,9 @@ public class OceanExplorer extends Application  {
 		}
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-
-	}
-
-
 	// Handler for the ship
 	private void startSailing() {
-		// Create a keypressed handler
+		// Create a key pressed handler
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {
@@ -212,6 +216,11 @@ public class OceanExplorer extends Application  {
 				}				
 			}
 		});
+	}
+	
+	
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 
