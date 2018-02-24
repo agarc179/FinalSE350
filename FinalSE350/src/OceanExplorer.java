@@ -15,26 +15,25 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class OceanExplorer extends Application  {
-
-
+	
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
 	Pane root; 
 	Ship ship;
-	PirateShip pirateShip, pirateShip2;
 	Coin coin;
 	Treasure treasure;
 	Scene scene;
-	Image shipImage, pirateShipImage, pirateShipImage2, gameOverImage, coinImage, treasureImage, winImage;
-	ImageView shipImageView, pirateShipImageView, pirateShipImageView2, gameOverImageView, coinImageView, treasureImageView, winImageView;
+	Image shipImage, pirateShipImage, gameOverImage, coinImage, treasureImage, winImage;
+	ImageView shipImageView, pirateShipImageView, gameOverImageView, coinImageView, treasureImageView, winImageView;
 	OceanMap oceanMap = OceanMap.getInstance(dimensions);
 	boolean endGame = false;
 	int[][] islandMap;
 	Random rand = new Random();
+	int numOfPirateShips;
 	
 	ArrayList<PirateShip> pirateShipList = new ArrayList<PirateShip>();
-	ArrayList<Image> pirateImageList = new ArrayList<Image>();
-	ArrayList<ImageView> pirateImageViewList = new ArrayList<ImageView>();
+	ArrayList<Image> pirateShipImageList = new ArrayList<Image>();
+	ArrayList<ImageView> pirateShipImageViewList = new ArrayList<ImageView>();
 	
 	public void start(Stage oceanStage) throws Exception {
 
@@ -49,16 +48,26 @@ public class OceanExplorer extends Application  {
 		drawMap();
 		drawIslands(oceanMap.getIslands()); // draws the islands
 		
+		// places GamePieces
 		placeShip();
 		placePirateShips();
 		placeTreasures();
 		
-		loadShipImage(); // loads the ship image
-		loadPirateShipImage(); // loads the pirate ship images
-		loadTreasuresImage();
-		loadCoinImage();
-		loadGameOverImage(); //loads the game over image
-		loadWinImage();
+		// loads Images
+		loadShipImage();
+		loadPirateShipImage(); 
+		loadTreasuresImage(); 
+		loadCoinImage(); 
+		loadGameOverImage();
+		loadWinImage(); 
+		
+		// set current images (ImageView) to the Pane
+		root.getChildren().add(shipImageView);
+		for(ImageView pirImageView: pirateShipImageViewList) {
+			root.getChildren().add(pirImageView);
+		}
+		root.getChildren().add(treasureImageView);
+		root.getChildren().add(coinImageView);
 
 	}
 	
@@ -89,13 +98,17 @@ public class OceanExplorer extends Application  {
 	}
 	
 	public void placePirateShips() {
-		pirateShip = new PirateShip(oceanMap); // first pirate ship object
-		ship.registerObserver(pirateShip);
+		numOfPirateShips = 6; // can change how many pirates to generate
+		for(int i = 0; i < numOfPirateShips; i++) {
+			pirateShipList.add(new PirateShip(oceanMap)); // add to pirateShipList new PirateShips
+		}
 		
-		pirateShip2 = new PirateShip(oceanMap); // second pirate ship object
-		ship.registerObserver(pirateShip2);
+		for(int i = 0; i < pirateShipList.size(); i++) {
+			ship.registerObserver(pirateShipList.get(i));
+		}
 	}
 	
+	// puts the decorator power and the treasure in the Map
 	public void placeTreasures() {
 		coin = new Coin(ship);
 		treasure = new Treasure();
@@ -109,29 +122,21 @@ public class OceanExplorer extends Application  {
 		shipImageView.setX(ship.getLocation().x * scale);
 		shipImageView.setY(ship.getLocation().y * scale);
 
-		// set current ship image (ImageView) to the Pane
-		root.getChildren().add(shipImageView);
+//		// set current ship image (ImageView) to the Pane
+//		root.getChildren().add(shipImageView);
 
 	}
 
 	public void loadPirateShipImage() {
 		// Load the pirate ship image
 		pirateShipImage =  new Image("pirate_ship.png", scale, scale, true,true);
-		pirateShipImageView = new ImageView(pirateShipImage);
-		pirateShipImageView.setX(pirateShip.getPirateShipLocation().x * scale);
-		pirateShipImageView.setY(pirateShip.getPirateShipLocation().y * scale);
-		oceanMap.oceanGrid[pirateShip.getPirateShipLocation().x][pirateShip.getPirateShipLocation().y] = 2;
-		
-		// Load the pirate ship 2 image
-		pirateShipImage2 =  new Image("pirate_ship.png", scale, scale, true,true);
-		pirateShipImageView2 = new ImageView(pirateShipImage2);
-		pirateShipImageView2.setX(pirateShip2.getPirateShipLocation2().x * scale);
-		pirateShipImageView2.setY(pirateShip2.getPirateShipLocation2().y * scale);
-		oceanMap.oceanGrid[pirateShip2.getPirateShipLocation2().x][pirateShip2.getPirateShipLocation2().y] = 2;
-
-		// set current pirate ship image (ImageView) to the Pane
-		root.getChildren().add(pirateShipImageView); // set current pirate ship 1 image (ImageView) to the Pane
-		root.getChildren().add(pirateShipImageView2); // set current pirate ship 2 image (ImageView) to the Pane
+		for(PirateShip pir: pirateShipList) {
+			pirateShipImageView = new ImageView(pirateShipImage);
+			pirateShipImageView.setX(pir.getLocation().x * scale);
+			pirateShipImageView.setY(pir.getLocation().y * scale);
+			pirateShipImageViewList.add(pirateShipImageView);
+			pir.setCoordinateValue(pir.getLocation().x, pir.getLocation().y, 2);
+		}
 	}
 	
 	public void loadTreasuresImage() {
@@ -139,8 +144,6 @@ public class OceanExplorer extends Application  {
 		treasureImageView = new ImageView(treasureImage);
 		treasureImageView.setX(treasure.getLocation().x * scale);
 		treasureImageView.setY(treasure.getLocation().y * scale);
-		
-		root.getChildren().add(treasureImageView);
 	}
 	
 	public void loadCoinImage() {
@@ -148,18 +151,15 @@ public class OceanExplorer extends Application  {
 		coinImageView = new ImageView(coinImage);
 		coinImageView.setX(coin.getLocation().x * scale);
 		coinImageView.setY(coin.getLocation().y * scale);
-		//oceanMap.oceanGrid[coin.getLocation().x][coin.getLocation().y] = 3;
 		coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
-		
-		root.getChildren().add(coinImageView);
 	}
 	
 	// method to load the game over image
 	public void loadGameOverImage() {
 		gameOverImage = new Image("game_over.png", scale, scale, true, true);
 		gameOverImageView = new ImageView(gameOverImage);
-		gameOverImageView.setX(pirateShip.getPirateShipLocation().x * scale);
-		gameOverImageView.setY(pirateShip.getPirateShipLocation().y * scale);
+		gameOverImageView.setX(pirateShipList.get(0).getLocation().x * scale);
+		gameOverImageView.setY(pirateShipList.get(0).getLocation().y * scale);
 	}
 	
 	public void loadWinImage() {
@@ -171,14 +171,14 @@ public class OceanExplorer extends Application  {
 	
 	// this will set the Game over image (ImageView) to the Pane.
 	protected void setGameOverImage() {
-		if((root.getChildren().contains(pirateShipImageView) || root.getChildren().contains(pirateShipImageView2)) 
-				&& root.getChildren().contains(shipImageView)) {
-			
-			root.getChildren().remove(pirateShipImageView);
-			root.getChildren().remove(pirateShipImageView2);
+		for(ImageView pirImageView: pirateShipImageViewList) {
+			if(root.getChildren().contains(pirImageView)) {
+				root.getChildren().remove(pirImageView);
+			}
+		}
+		if(root.getChildren().contains(shipImageView)) {
 			root.getChildren().remove(shipImageView);
 			root.getChildren().add(gameOverImageView);
-			
 		}
 	}
 	
@@ -190,10 +190,62 @@ public class OceanExplorer extends Application  {
 		}
 	}
 	
+	// removes coin image from pane
 	protected void removeCoinImage(){
 		if((root.getChildren().contains(coinImageView))) {
 			root.getChildren().remove(coinImageView);
 		}
+	}
+	
+	//updates image location displayed on the map after things move inside the singleton map
+	protected void updateImageLocation() {
+		shipImageView.setX(ship.getLocation().x * scale);
+		shipImageView.setY(ship.getLocation().y * scale);
+		
+		int counter = 0;
+		for(ImageView pirImageView: pirateShipImageViewList) {
+			pirImageView.setX(pirateShipList.get(counter).getLocation().x * scale);
+			pirImageView.setY(pirateShipList.get(counter).getLocation().y * scale);
+			counter++;
+		}
+		
+		for(PirateShip pir: pirateShipList) {
+			if(ship.getLocation().equals(pir.getLocation())){
+				gameOverImageView.setX(pir.getLocation().x * scale);
+				gameOverImageView.setY(pir.getLocation().y * scale);
+			}
+			
+			// removes a life when ship touches pirateShip (only when ship has more 1 or more lives)
+			if(ship.getLocation().equals(pir.getLocation()) && ship.getLives() > 0) {
+				ship.removeOneLife();
+			}
+			// Check for "end of game"! (Ship has 0 lives) 
+			else if(ship.getLocation().equals(pir.getLocation()) && ship.lives == 0) {
+				setGameOverImage();
+				endGame = true;
+			}
+		}
+		
+		// adds power when ship collects coin
+		if(ship.getLocation().equals(coin.getLocation())) {
+			if(coin.getValue() == 3) {
+				removeCoinImage();
+				coin.power();
+				
+				// after coin gets collected coin coordinates sets to 0.
+				coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 0);
+			}
+		}
+		
+		// wins game
+		if(ship.getLocation().equals(treasure.getLocation())) {
+			setGameWinImage();
+			endGame = true;
+		}
+		
+		oceanMap.displayMap();
+		System.out.println(ship.getLives());
+		
 	}
 
 	// Handler for the ship
@@ -219,70 +271,13 @@ public class OceanExplorer extends Application  {
 					default:
 						break;
 					}
-					shipImageView.setX(ship.getLocation().x * scale);
-					shipImageView.setY(ship.getLocation().y * scale);
+					updateImageLocation();
 					
-					pirateShipImageView.setX(pirateShip.getPirateShipLocation().x * scale);
-					pirateShipImageView.setY(pirateShip.getPirateShipLocation().y * scale);
-					//System.out.println("Pirate Ship: " + pirateShip.getPirateShipLocation().x + "," + pirateShip.getPirateShipLocation().y);
-					
-					pirateShipImageView2.setX(pirateShip2.getPirateShipLocation2().x * scale);
-					pirateShipImageView2.setY(pirateShip2.getPirateShipLocation2().y * scale);
-					//System.out.println("Pirate Ship2: " + pirateShip2.getPirateShipLocation2().x + "," + pirateShip2.getPirateShipLocation2().y);
-					
-					if(ship.getLocation().equals(pirateShip.getPirateShipLocation())){
-						gameOverImageView.setX(pirateShip.getPirateShipLocation().x * scale);
-						gameOverImageView.setY(pirateShip.getPirateShipLocation().y * scale);
-					}
-					else if(ship.getLocation().equals(pirateShip2.getPirateShipLocation2())) {
-						gameOverImageView.setX(pirateShip2.getPirateShipLocation2().x * scale);
-						gameOverImageView.setY(pirateShip2.getPirateShipLocation2().y * scale);
-					}
-					
-					if(ship.getLocation().equals(coin.getLocation())) {
-						if(coin.getValue() == 3) {
-							removeCoinImage();
-							coin.power();
-							
-							// after coin gets collected coin coordinates sets to 0.
-							coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 0);
-						}
-					}
-					
-					if(ship.getLocation().equals(treasure.getLocation())) {
-						setGameWinImage();
-						endGame = true;
-					}
-					
-					if((ship.getLocation().equals(pirateShip.getPirateShipLocation()) 
-							|| ship.getLocation().equals(pirateShip2.getPirateShipLocation2())) && ship.getLives() > 0){
-						ship.removeOneLife();
-					}
-					
-					
-					// Check for "end of game" -- Target found!
-					if((ship.getLocation().equals(pirateShip.getPirateShipLocation()) 
-							|| ship.getLocation().equals(pirateShip2.getPirateShipLocation2())) && ship.lives == 0){
-						
-						setGameOverImage();
-						endGame = true;
-					}
-					
-					
-					
-					oceanMap.displayMap();
-					System.out.println(ship.getLives());
-					
-//					System.out.println();
-//					System.out.println("Ship: " + ship.getShipLocation().x + "," + ship.getShipLocation().y);
-//					System.out.println("pirate ship coordinate value: " + oceanMap.oceanGrid[pirateShip.xCell][pirateShip.yCell]);
-//					System.out.println();
 				}				
 			}
 		});
 	}
-	
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

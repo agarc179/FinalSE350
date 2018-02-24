@@ -56,7 +56,6 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 	public int getValue() {
 		return value;
 	}
-	
 
 	@Override
 	public GamePiece getObject() {

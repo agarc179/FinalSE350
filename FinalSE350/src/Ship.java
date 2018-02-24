@@ -136,6 +136,11 @@ public class Ship implements Subject, Power, GamePiece {
 		oceanMap.oceanGrid[x][y] = value;
 		
 	}
+	
+	@Override
+	public int getValue() {
+		return value;
+	}
 
 
 	@Override
@@ -143,12 +148,6 @@ public class Ship implements Subject, Power, GamePiece {
 		return this;
 	}
 
-
-	@Override
-	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 
 }
