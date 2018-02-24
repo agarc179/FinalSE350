@@ -4,17 +4,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Ship implements Subject, Power {
+public class Ship implements Subject, Power, GamePiece {
 
 	int xCell;
 	int yCell;
+	int value;
 	OceanMap oceanMap;
+	int lives;
 
 	List<Observer> observers = new LinkedList<Observer>();
 	ArrayList<SpecialPowerDecorator> decoratorList = new ArrayList<SpecialPowerDecorator>();
 	
 	// constructor
 	public Ship(OceanMap oceanMap) {
+		lives = 1;
 		Random rand = new Random();
 
 		do {
@@ -27,10 +30,6 @@ public class Ship implements Subject, Power {
 
 	}
 
-	// gets ship location
-	public Point getShipLocation() {
-		return new Point(xCell,yCell);
-	}
 
 	// move to the right
 	public void goEast() {
@@ -71,6 +70,20 @@ public class Ship implements Subject, Power {
 	public void addDecorator(SpecialPowerDecorator specialItem) {
 		decoratorList.add(specialItem);
 	}
+	
+	public void addOneLife() {
+		lives += 1;
+	}
+	
+	public int getLives() {
+		return lives;
+	}
+	
+	public void removeOneLife() {
+		if(lives > 0) {
+			lives -= 1;
+		}
+	}
 
 	@Override
 	public void registerObserver(Observer o) {
@@ -104,5 +117,38 @@ public class Ship implements Subject, Power {
 	public void power() {
 		// TODO Auto-generated method stub	
 	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	// gets ship location
+	public Point getLocation() {
+		return new Point(xCell, yCell);
+	}
+	
+	@Override
+	public void setCoordinateValue(int x, int y, int value) {
+		this.value = value;
+		oceanMap.oceanGrid[x][y] = value;
+		
+	}
+
+
+	@Override
+	public GamePiece getObject() {
+		return this;
+	}
+
+
+	@Override
+	public int getValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

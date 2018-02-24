@@ -33,7 +33,7 @@ public class OceanMap {
 	public int[][] getMap(){
 		return oceanGrid;
 	}
-
+	
 	// returns the value of the Coordinate
 	public int getCoordinateValue(int x, int y) {
 		return oceanGrid[x][y];

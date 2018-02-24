@@ -1,12 +1,14 @@
 import java.awt.Point;
 import java.util.Random;
 
-public class Coin extends SpecialPowerDecorator {
+public class Coin extends SpecialPowerDecorator implements GamePiece {
 	
 	int xCell; // x coordinate for coin
 	int yCell; // y coordinate for coin
 	Random rand = new Random();
 	OceanMap oceanMap = OceanMap.getInstance(28);
+	Ship ship;
+	int value;
 	
 	Power powerUp;
 	
@@ -20,10 +22,6 @@ public class Coin extends SpecialPowerDecorator {
 		}while(oceanMap.getCoordinateValue(xCell, yCell) == 1 || oceanMap.getCoordinateValue(xCell, yCell) == 2);
 	}
 	
-	// sets the pirate ship coordinates with a value of 2 in the board
-	public void setCoinCoordinateValue(int x, int y) {
-		oceanMap.oceanGrid[x][y] = 3;
-	}
 
 	@Override
 	public String getDescription() {
@@ -32,13 +30,40 @@ public class Coin extends SpecialPowerDecorator {
 
 	@Override
 	public void power() {
-		// TODO Auto-generated method stub
-		super.power();
+		if(powerUp instanceof Ship) {
+			((Ship) powerUp).addOneLife();
+		}
 	}
 	
-	public Point getCoinLocation() {
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public Point getLocation() {
 		return new Point(xCell,yCell);
 	}
+	
+	@Override
+	// sets the pirate ship coordinates with a value of 2 in the board
+	public void setCoordinateValue(int x, int y, int value) {
+		this.value = value;
+		oceanMap.oceanGrid[x][y] = value;
+	}
+
+	@Override
+	public int getValue() {
+		return value;
+	}
+	
+
+	@Override
+	public GamePiece getObject() {
+		return this;
+	}
+
+
 	
 	
 	

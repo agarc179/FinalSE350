@@ -1,7 +1,7 @@
 import java.awt.Point;
 import java.util.Random;
 
-public class PirateShip implements Observer {
+public class PirateShip implements Observer{
 
 	Point shipPosition;
 
@@ -43,7 +43,7 @@ public class PirateShip implements Observer {
 	@Override
 	public void update(Ship ship) {
 		if(ship instanceof Ship) {
-			shipPosition = ((Ship)ship).getShipLocation();
+			shipPosition = ((Ship)ship).getLocation();
 			movePirateShip();
 		}
 	}
@@ -51,7 +51,7 @@ public class PirateShip implements Observer {
 	// movements for pirate ship
 	public void movePirateShip() {
 
-		if(rand.nextInt(2)==1) { //Slow down the pirate ship
+		if(rand.nextInt(4)==1) { //Slow down the pirate ship
 			
 			// checks for boundaries on the x axis (right of board) for the pirate ship && islands to right
 			if(xCell < oceanMap.getMap().length - 1 && oceanMap.getCoordinateValue(xCell+1, yCell) != 1){ 
