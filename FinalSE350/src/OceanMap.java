@@ -8,23 +8,32 @@ import javafx.scene.shape.Rectangle;
 
 public class OceanMap {
 
-	int scalingFactor = 50;
+	private static OceanMap uniqueInstance;
+	int scalingFactor = 25;
 	int N;
-	int[][] oceanGrid = new int[10][10];
+	int[][] oceanGrid = new int[28][28];
+
 	ArrayList<Rectangle> islands = new ArrayList<Rectangle>();
 	Map<String, Integer> islandsCoordinates = new HashMap<String, Integer>();
 
 	// constructor
-	public OceanMap(int mapSize) {
+	private OceanMap(int mapSize) {				
 		N = mapSize;
 		buildIslands();
 	}
+		
+	public static OceanMap getInstance(int size) {
+		if(uniqueInstance == null) {
+			uniqueInstance = new OceanMap(size);
 
+		}
+		return uniqueInstance;
+	}
 	// Return generated map
 	public int[][] getMap(){
-		return oceanGrid; // Where hopefully “myGrid” has a more meaningful name.
+		return oceanGrid;
 	}
-
+	
 	// returns the value of the Coordinate
 	public int getCoordinateValue(int x, int y) {
 		return oceanGrid[x][y];
