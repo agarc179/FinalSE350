@@ -6,7 +6,7 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 	int xCell; // x coordinate for coin
 	int yCell; // y coordinate for coin
 	Random rand = new Random();
-	OceanMap oceanMap = OceanMap.getInstance(28);
+	OceanMap oceanMap;
 	Ship ship;
 	int value;
 	
@@ -15,6 +15,7 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 	// constructor
 	public Coin(Power power) {
 		powerUp = power;
+		oceanMap = OceanMap.getInstance(28);
 		do {
 			xCell = rand.nextInt(oceanMap.N);
 			yCell = rand.nextInt(oceanMap.N);

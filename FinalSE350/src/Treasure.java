@@ -7,9 +7,10 @@ public class Treasure implements GamePiece {
 	int yCell; // y coordinate for treasure
 	int value;
 	Random rand = new Random();
-	OceanMap oceanMap = OceanMap.getInstance(28);
+	OceanMap oceanMap;
 	
 	public Treasure() {
+		oceanMap = OceanMap.getInstance(28);
 		do {
 			xCell = rand.nextInt(oceanMap.N);
 			yCell = rand.nextInt(oceanMap.N);
