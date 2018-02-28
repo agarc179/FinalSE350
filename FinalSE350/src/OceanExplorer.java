@@ -8,6 +8,7 @@ import java.util.Random;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,7 +19,8 @@ public class OceanExplorer extends Application  {
 	
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
-	Pane root; 
+	Pane root;
+	Button button;
 	Ship ship;
 	Coin coin;
 	Treasure treasure;
@@ -45,11 +47,16 @@ public class OceanExplorer extends Application  {
 	public void start(Stage oceanStage) throws Exception {
 
 		root = new AnchorPane();
-		scene = new Scene(root, 700, 700);
+		scene = new Scene(root, 800, 700);
 		oceanStage.setScene(scene);
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
 		oceanStage.show();
 		startSailing();
+		
+		button = new Button("Lives: 1");
+		button.setTranslateX(715);
+		button.setTranslateY(50);
+		root.getChildren().add(button);
 		
 		islandMap = oceanMap.getMap();
 		drawMap();
@@ -287,8 +294,10 @@ public class OceanExplorer extends Application  {
 			endGame = true;
 		}
 		
-		oceanMap.displayMap();
-		System.out.println(ship.getLives());
+		button.setText("Lives: " + Integer.toString(ship.getLives()));
+		
+		oceanMap.displayMap(); // testing purposes
+		System.out.println(ship.getLives()); // testing purposes
 		
 	}
 
