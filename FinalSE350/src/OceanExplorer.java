@@ -70,15 +70,17 @@ public class OceanExplorer extends Application  {
 		
 		// set current images (ImageView) to the Pane
 		root.getChildren().add(shipImageView);
+		
 		for(ImageView pirImageView: pirateShipImageViewList) {
 			root.getChildren().add(pirImageView);
 		}
+		
 		root.getChildren().add(treasureImageView);
+		
 		for(ImageView coinImageView: coinImageViewList) {
 			root.getChildren().add(coinImageView);
 		}
-		//root.getChildren().add(coinImageView);
-
+		
 	}
 	
 	
@@ -135,7 +137,6 @@ public class OceanExplorer extends Application  {
 		numOfCoins = 3; // number of coins to be created
 		for(int i = 0; i < numOfCoins; i++) {
 			coin = new Coin(ship);
-			coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
 			coinList.add(coin);
 		}
 		treasure = new Treasure();
@@ -148,9 +149,6 @@ public class OceanExplorer extends Application  {
 		shipImageView = new ImageView(shipImage);
 		shipImageView.setX(ship.getLocation().x * scale);
 		shipImageView.setY(ship.getLocation().y * scale);
-
-//		// set current ship image (ImageView) to the Pane
-//		root.getChildren().add(shipImageView);
 
 	}
 
@@ -186,6 +184,7 @@ public class OceanExplorer extends Application  {
 		treasureImageView.setY(treasure.getLocation().y * scale);
 	}
 	
+	// loading coin images
 	public void loadCoinImage() {
 		coinImage = new Image("coin.png", scale, scale, true, true);
 		for(Coin coin: coinList) {
@@ -193,12 +192,8 @@ public class OceanExplorer extends Application  {
 			coinImageView.setX(coin.getLocation().x * scale);
 			coinImageView.setY(coin.getLocation().y * scale);
 			coinImageViewList.add(coinImageView);
-			//coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
+			coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
 		}
-//		coinImageView = new ImageView(coinImage);
-//		coinImageView.setX(coin.getLocation().x * scale);
-//		coinImageView.setY(coin.getLocation().y * scale);
-//		coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
 	}
 	
 	// method to load the game over image
@@ -209,6 +204,7 @@ public class OceanExplorer extends Application  {
 		gameOverImageView.setY(pirateShipList.get(0).getLocation().y * scale);
 	}
 	
+	// loading the win image
 	public void loadWinImage() {
 		winImage = new Image("win.png", scale, scale, true, true);
 		winImageView = new ImageView(winImage);
@@ -275,10 +271,13 @@ public class OceanExplorer extends Application  {
 		
 		// adds power when ship collects a coin
 		for(int i = 0; i < coinList.size(); i++) {
-			if(ship.getLocation().equals(coinList.get(i).getLocation())) {
-				removeCoinImage(i);
-				coin.power();
-				coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 0);
+			Coin currentCoin = coinList.get(i);
+			if(ship.getLocation().equals(currentCoin.getLocation())) {
+				if(currentCoin.getValue() == 3) {
+					removeCoinImage(i);
+					currentCoin.power();
+					currentCoin.setCoordinateValue(currentCoin.getLocation().x, currentCoin.getLocation().y, 0);
+				}
 			}
 		}
 		
