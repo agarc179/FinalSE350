@@ -55,15 +55,15 @@ public class OceanMap {
 		islands.add(island);
 	}
 
-	// builds 10 Islands
+	// builds 30 Islands
 	private void buildIslands() {
 
 		Random rand = new Random();
 		int islandCounter = 0;
 
-		while(islandCounter < 10) {
-			int randX = rand.nextInt(N); // random X coordinate between index [0..9]
-			int randY = rand.nextInt(N); // random Y coordinate between index [0..9]
+		while(islandCounter < 30) {
+			int randX = rand.nextInt(N); // random X coordinate between index [0..27]
+			int randY = rand.nextInt(N); // random Y coordinate between index [0..27]
 			if(islandsCoordinates.containsKey(randX + "," + randY) == false) {
 				islandsCoordinates.put(randX + "," + randY , 1);
 				setIsland(randX, randY);

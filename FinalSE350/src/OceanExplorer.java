@@ -8,6 +8,7 @@ import java.util.Random;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,31 +19,44 @@ public class OceanExplorer extends Application  {
 	
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
-	Pane root; 
+	Pane root;
+	Button button;
 	Ship ship;
 	Coin coin;
 	Treasure treasure;
 	Scene scene;
-	Image shipImage, pirateShipImage, gameOverImage, coinImage, treasureImage, winImage;
-	ImageView shipImageView, pirateShipImageView, gameOverImageView, coinImageView, treasureImageView, winImageView;
+	Image shipImage, bigPirateShipImage, smallPirateShipImage, gameOverImage, coinImage, treasureImage, winImage;
+	ImageView shipImageView, bigPirateShipImageView, smallPirateShipImageView, gameOverImageView, coinImageView, treasureImageView, winImageView;
 	OceanMap oceanMap = OceanMap.getInstance(dimensions);
 	boolean endGame = false;
 	int[][] islandMap;
 	Random rand = new Random();
-	int numOfPirateShips;
+	int numOfBigPirateShips;
+	int numOfSmallPirateShips;
+	int numOfCoins;
 	
 	ArrayList<PirateShip> pirateShipList = new ArrayList<PirateShip>();
 	ArrayList<Image> pirateShipImageList = new ArrayList<Image>();
 	ArrayList<ImageView> pirateShipImageViewList = new ArrayList<ImageView>();
 	
+	ArrayList<Coin> coinList = new ArrayList<Coin>();
+	ArrayList<Image> coinImageList = new ArrayList<Image>();
+	ArrayList<ImageView> coinImageViewList = new ArrayList<ImageView>();
+	
+	
 	public void start(Stage oceanStage) throws Exception {
 
 		root = new AnchorPane();
-		scene = new Scene(root, 700, 700);
+		scene = new Scene(root, 800, 700);
 		oceanStage.setScene(scene);
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
 		oceanStage.show();
 		startSailing();
+		
+		button = new Button("Lives: 1");
+		button.setTranslateX(715);
+		button.setTranslateY(50);
+		root.getChildren().add(button);
 		
 		islandMap = oceanMap.getMap();
 		drawMap();
@@ -63,12 +77,17 @@ public class OceanExplorer extends Application  {
 		
 		// set current images (ImageView) to the Pane
 		root.getChildren().add(shipImageView);
+		
 		for(ImageView pirImageView: pirateShipImageViewList) {
 			root.getChildren().add(pirImageView);
 		}
+		
 		root.getChildren().add(treasureImageView);
-		root.getChildren().add(coinImageView);
-
+		
+		for(ImageView coinImageView: coinImageViewList) {
+			root.getChildren().add(coinImageView);
+		}
+		
 	}
 	
 	
@@ -94,13 +113,25 @@ public class OceanExplorer extends Application  {
 	}
 	
 	public void placeShip() {
-		ship = new Ship(oceanMap); // ship object
+		ship = new Ship(); // ship object
 	}
 	
 	public void placePirateShips() {
-		numOfPirateShips = 6; // can change how many pirates to generate
-		for(int i = 0; i < numOfPirateShips; i++) {
-			pirateShipList.add(new PirateShip(oceanMap)); // add to pirateShipList new PirateShips
+		PirateShipFactory bigPirateShipFactory = new BigPirateShipFactory();
+		PirateShipFactory smallPirateShipFactory = new SmallPirateShipFactory();
+		
+		numOfBigPirateShips = 6; // can change how many big pirates to generate
+		for(int i = 0; i < numOfBigPirateShips; i++) {
+			PirateShip bigPirateShip = bigPirateShipFactory.buildPirateShip("BigPirateShip");
+			
+			pirateShipList.add(bigPirateShip); // add to pirateShipList new BigPirateShips
+		}
+		
+		numOfSmallPirateShips = 3; // can change how many small pirates to generate
+		for(int i = 0; i < numOfSmallPirateShips; i++) {
+			PirateShip smallPirateShip = smallPirateShipFactory.buildPirateShip("SmallPirateShip");
+			
+			pirateShipList.add(smallPirateShip); // add to pirateShipList new SmallPirateShips
 		}
 		
 		for(int i = 0; i < pirateShipList.size(); i++) {
@@ -110,7 +141,11 @@ public class OceanExplorer extends Application  {
 	
 	// puts the decorator power and the treasure in the Map
 	public void placeTreasures() {
-		coin = new Coin(ship);
+		numOfCoins = 3; // number of coins to be created
+		for(int i = 0; i < numOfCoins; i++) {
+			coin = new Coin(ship);
+			coinList.add(coin);
+		}
 		treasure = new Treasure();
 		
 	}
@@ -122,20 +157,30 @@ public class OceanExplorer extends Application  {
 		shipImageView.setX(ship.getLocation().x * scale);
 		shipImageView.setY(ship.getLocation().y * scale);
 
-//		// set current ship image (ImageView) to the Pane
-//		root.getChildren().add(shipImageView);
-
 	}
 
 	public void loadPirateShipImage() {
 		// Load the pirate ship image
-		pirateShipImage =  new Image("pirate_ship.png", scale, scale, true,true);
+		bigPirateShipImage = new Image("bigPirateShip.png", scale, scale, true,true);
+		smallPirateShipImage = new Image("smallPirateShip.png", scale, scale, true,true);
+		
+		// Big Pirates Ships
 		for(PirateShip pir: pirateShipList) {
-			pirateShipImageView = new ImageView(pirateShipImage);
-			pirateShipImageView.setX(pir.getLocation().x * scale);
-			pirateShipImageView.setY(pir.getLocation().y * scale);
-			pirateShipImageViewList.add(pirateShipImageView);
-			pir.setCoordinateValue(pir.getLocation().x, pir.getLocation().y, 2);
+			if(pir instanceof BigPirateShip) {
+				bigPirateShipImageView = new ImageView(bigPirateShipImage);
+				bigPirateShipImageView.setX(pir.getLocation().x * scale);
+				bigPirateShipImageView.setY(pir.getLocation().y * scale);
+				pirateShipImageViewList.add(bigPirateShipImageView);
+				pir.setCoordinateValue(pir.getLocation().x, pir.getLocation().y, 2);
+			}
+			// small Pirates Ships
+			else if(pir instanceof SmallPirateShip) {
+				smallPirateShipImageView = new ImageView(smallPirateShipImage);
+				smallPirateShipImageView.setX(pir.getLocation().x * scale);
+				smallPirateShipImageView.setY(pir.getLocation().y * scale);
+				pirateShipImageViewList.add(smallPirateShipImageView);
+				pir.setCoordinateValue(pir.getLocation().x, pir.getLocation().y, 2);
+			}
 		}
 	}
 	
@@ -146,12 +191,16 @@ public class OceanExplorer extends Application  {
 		treasureImageView.setY(treasure.getLocation().y * scale);
 	}
 	
+	// loading coin images
 	public void loadCoinImage() {
 		coinImage = new Image("coin.png", scale, scale, true, true);
-		coinImageView = new ImageView(coinImage);
-		coinImageView.setX(coin.getLocation().x * scale);
-		coinImageView.setY(coin.getLocation().y * scale);
-		coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
+		for(Coin coin: coinList) {
+			coinImageView = new ImageView(coinImage);
+			coinImageView.setX(coin.getLocation().x * scale);
+			coinImageView.setY(coin.getLocation().y * scale);
+			coinImageViewList.add(coinImageView);
+			coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 3);
+		}
 	}
 	
 	// method to load the game over image
@@ -162,6 +211,7 @@ public class OceanExplorer extends Application  {
 		gameOverImageView.setY(pirateShipList.get(0).getLocation().y * scale);
 	}
 	
+	// loading the win image
 	public void loadWinImage() {
 		winImage = new Image("win.png", scale, scale, true, true);
 		winImageView = new ImageView(winImage);
@@ -190,10 +240,10 @@ public class OceanExplorer extends Application  {
 		}
 	}
 	
-	// removes coin image from pane
-	protected void removeCoinImage(){
-		if((root.getChildren().contains(coinImageView))) {
-			root.getChildren().remove(coinImageView);
+	// removes coin image from pane according to the one that was touched (that is why the index is passed)
+	protected void removeCoinImage(int index){
+		if((root.getChildren().contains(coinImageViewList.get(index)))) {
+			root.getChildren().remove(coinImageViewList.get(index));
 		}
 	}
 	
@@ -226,14 +276,15 @@ public class OceanExplorer extends Application  {
 			}
 		}
 		
-		// adds power when ship collects coin
-		if(ship.getLocation().equals(coin.getLocation())) {
-			if(coin.getValue() == 3) {
-				removeCoinImage();
-				coin.power();
-				
-				// after coin gets collected coin coordinates sets to 0.
-				coin.setCoordinateValue(coin.getLocation().x, coin.getLocation().y, 0);
+		// adds power when ship collects a coin
+		for(int i = 0; i < coinList.size(); i++) {
+			Coin currentCoin = coinList.get(i);
+			if(ship.getLocation().equals(currentCoin.getLocation())) {
+				if(currentCoin.getValue() == 3) {
+					removeCoinImage(i);
+					currentCoin.power();
+					currentCoin.setCoordinateValue(currentCoin.getLocation().x, currentCoin.getLocation().y, 0);
+				}
 			}
 		}
 		
@@ -243,8 +294,10 @@ public class OceanExplorer extends Application  {
 			endGame = true;
 		}
 		
-		oceanMap.displayMap();
-		System.out.println(ship.getLives());
+		button.setText("Lives: " + Integer.toString(ship.getLives()));
+		
+		oceanMap.displayMap(); // testing purposes
+		System.out.println(ship.getLives()); // testing purposes
 		
 	}
 

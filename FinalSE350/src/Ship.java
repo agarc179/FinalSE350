@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Ship implements Subject, Power, GamePiece {
-
+	final int dimensions = 28;
 	int xCell;
 	int yCell;
 	int value;
@@ -16,7 +16,8 @@ public class Ship implements Subject, Power, GamePiece {
 	ArrayList<SpecialPowerDecorator> decoratorList = new ArrayList<SpecialPowerDecorator>();
 	
 	// constructor
-	public Ship(OceanMap oceanMap) {
+	public Ship() {
+		this.oceanMap = OceanMap.getInstance(dimensions);
 		lives = 1;
 		Random rand = new Random();
 
@@ -25,8 +26,6 @@ public class Ship implements Subject, Power, GamePiece {
 			yCell = rand.nextInt(oceanMap.N);
 
 		}while (oceanMap.getCoordinateValue(xCell, yCell) == 1); // repeat while ship gets placed on an island
-
-		this.oceanMap = oceanMap;
 
 	}
 
