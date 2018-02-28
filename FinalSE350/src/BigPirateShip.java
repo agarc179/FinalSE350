@@ -19,7 +19,7 @@ public class BigPirateShip extends PirateShip {
 
 	@Override
 	public void move() {
-		if(rand.nextInt(6)==1) { //Slow down the pirate ship
+		if(rand.nextInt(8)==1) { //Slow down the pirate ship
 			
 			// checks for boundaries on the x axis (right of board) for the pirate ship && islands to right
 			if(xCell < oceanMap.getMap().length - 1 && oceanMap.getCoordinateValue(xCell+1, yCell) != 1){ 
