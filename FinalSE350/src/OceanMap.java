@@ -61,7 +61,7 @@ public class OceanMap {
 		Random rand = new Random();
 		int islandCounter = 0;
 
-		while(islandCounter < 30) {
+		while(islandCounter < 200) {
 			int randX = rand.nextInt(N); // random X coordinate between index [0..27]
 			int randY = rand.nextInt(N); // random Y coordinate between index [0..27]
 			if(islandsCoordinates.containsKey(randX + "," + randY) == false) {

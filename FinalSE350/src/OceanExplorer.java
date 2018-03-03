@@ -1,5 +1,6 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
@@ -21,6 +22,7 @@ public class OceanExplorer extends Application  {
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
 	Pane root;
 	Button button;
+	Button reset;
 	Ship ship;
 	Coin coin;
 	Treasure treasure;
@@ -53,15 +55,29 @@ public class OceanExplorer extends Application  {
 		oceanStage.show();
 		startSailing();
 		
+		//adds the lives display button
 		button = new Button("Lives: 1");
-		button.setTranslateX(715);
+		button.setTranslateX(723);
 		button.setTranslateY(50);
 		root.getChildren().add(button);
+		
+		//adds the reset button and enables the reset of the game
+		reset = new Button("Reset Game");
+		reset.setTranslateX(710);
+		reset.setTranslateY(100);
+		root.getChildren().add(reset);
 		
 		islandMap = oceanMap.getMap();
 		drawMap();
 		drawIslands(oceanMap.getIslands()); // draws the islands
 		
+		//resets the game if the button is pushed
+		reset.setOnAction(new EventHandler <ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				resetGame();
+			}
+		});
 		// places GamePieces
 		placeShip();
 		placePirateShips();
@@ -90,7 +106,9 @@ public class OceanExplorer extends Application  {
 		
 	}
 	
-	
+	public void resetGame() {
+		
+	}
 
 	public void drawMap() {
 		for(int x = 0; x < dimensions; x++){
