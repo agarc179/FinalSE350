@@ -27,6 +27,8 @@ public class OceanExplorer extends Application  {
 	Coin coin;
 	Treasure treasure;
 	Scene scene;
+	Monster monster;
+	Thread monsterThread;
 	Image shipImage, bigPirateShipImage, smallPirateShipImage, gameOverImage, coinImage, treasureImage, winImage;
 	ImageView shipImageView, bigPirateShipImageView, smallPirateShipImageView, gameOverImageView, coinImageView, treasureImageView, winImageView;
 	OceanMap oceanMap = OceanMap.getInstance(dimensions);
@@ -52,8 +54,9 @@ public class OceanExplorer extends Application  {
 		scene = new Scene(root, 800, 700);
 		oceanStage.setScene(scene);
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
-		oceanStage.show();
-		startSailing();
+		
+		monster = new Monster(scale);
+		//monster.addToMap(root.getChildren());
 		
 		//adds the lives display button
 		button = new Button("Lives: 1");
@@ -67,10 +70,17 @@ public class OceanExplorer extends Application  {
 		reset.setTranslateY(100);
 		root.getChildren().add(reset);
 		
+		
 		islandMap = oceanMap.getMap();
 		drawMap();
 		drawIslands(oceanMap.getIslands()); // draws the islands
+		monster.addToMap(root.getChildren());
 		
+		oceanStage.show();
+		startSailing();
+		
+		monsterThread = new Thread(monster);
+		monsterThread.start();
 		//resets the game if the button is pushed
 		reset.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
@@ -106,8 +116,14 @@ public class OceanExplorer extends Application  {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void stop(){
+		monsterThread.stop();
+	}
+	
 	public void resetGame() {
-		
+	
 	}
 
 	public void drawMap() {
