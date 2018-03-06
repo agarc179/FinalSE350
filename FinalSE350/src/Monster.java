@@ -2,6 +2,8 @@ import java.util.Random;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 
 public class Monster implements Runnable {
@@ -9,7 +11,10 @@ public class Monster implements Runnable {
 	Boolean running = true;
 	int radius;
 	Random rand = new Random();
+	int scale = 25;
 	int scalingFactor;
+	Image monstImage;
+	ImageView monstImageView;
 	MonsterSprite[] monsterList = new MonsterSprite[10];
 	public Monster(int scalingFactor) {
 		for(int i = 0; i < monsterList.length; i++) {
@@ -29,7 +34,7 @@ public class Monster implements Runnable {
 		sceneGraph.add(circle);
 		}
 	}
-	
+
 	@Override
 	public void run() {
 	      while (true) {
