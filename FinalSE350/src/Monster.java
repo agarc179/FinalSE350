@@ -13,8 +13,6 @@ public class Monster implements Runnable {
 	Random rand = new Random();
 	int scale = 25;
 	int scalingFactor;
-	Image monstImage;
-	ImageView monstImageView;
 	MonsterSprite[] monsterList = new MonsterSprite[10];
 	public Monster(int scalingFactor) {
 		for(int i = 0; i < monsterList.length; i++) {

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -303,7 +304,24 @@ public class OceanExplorer extends Application  {
 			pirImageView.setY(pirateShipList.get(counter).getLocation().y * scale);
 			counter++;
 		}
-		
+		for(MonsterSprite monst: monster.monsterList) {
+			Point monstLoc = new Point(monst.getX(),monst.getY());
+			if(ship.getLocation().equals(monstLoc)) {
+				gameOverImageView.setX(monst.getX() * scale);
+				gameOverImageView.setY(monst.getY() * scale);
+			}
+			
+			// removes a life when ship touches Kraken (only when ship has more 1 or more lives)
+			if(ship.getLocation().equals(monstLoc) && ship.getLives() > 0) {
+				ship.removeOneLife();
+			}
+			
+			//check for "end game" qualifications
+			else if(ship.getLocation().equals(monstLoc) && ship.lives == 0) {
+				setGameOverImage();
+				endGame = true;
+			}
+		}
 		for(PirateShip pir: pirateShipList) {
 			if(ship.getLocation().equals(pir.getLocation())){
 				gameOverImageView.setX(pir.getLocation().x * scale);
