@@ -1,19 +1,30 @@
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-
-class MonsterSprite {
+class MonsterSprite{
 	int x;
 	int y;
 	Circle monst;
 	int scalingFactor;
+	int scale = 25;
 	int radius = 10;
+	Image monstImage;
+	ImageView monstImageView;
 	MonsterSprite(int x, int y, int scalingFactor){
 		this.x = x;
 		this.y = y;
+		
+		//sets dimensions of the new circle "Monster"
 		monst = new Circle();
 		setPositionX(x);
 		setPositionY(y);
 		monst.setRadius(radius);
+		
+		//sets the image for the circle to be the kraken
+		Image img = new Image("kraken.png");
+		monst.setFill(new ImagePattern(img));
+		
 		this.scalingFactor = scalingFactor;
 	}
 	
@@ -39,11 +50,6 @@ class MonsterSprite {
 		return y;
 	}
 	
-	public void setColor(Circle monst, Color color) {
-		monst.setStroke(color);
-		monst.setFill(color);
-	}
-	
 	public void setPositionX(int x){
 		monst.setCenterX(x*scalingFactor + (scalingFactor/2));
 	}
@@ -51,5 +57,6 @@ class MonsterSprite {
 	public void setPositionY(int y){
 		monst.setCenterY(y*scalingFactor + (scalingFactor/2));
 	}
+
 	
 }

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -49,7 +50,6 @@ public class OceanExplorer extends Application  {
 	ArrayList<Image> coinImageList = new ArrayList<Image>();
 	ArrayList<ImageView> coinImageViewList = new ArrayList<ImageView>();
 	
-	
 	public void start(Stage oceanStage) throws Exception {
 
 		root = new AnchorPane();
@@ -58,7 +58,6 @@ public class OceanExplorer extends Application  {
 		oceanStage.setTitle("Christopher Columbus Sails the Ocean Blue");
 		
 		monster = new Monster(scale);
-		//monster.addToMap(root.getChildren());
 		
 		//adds the lives display Label
 		livesLabel = new Label("Lives: 1");
@@ -78,7 +77,6 @@ public class OceanExplorer extends Application  {
 		reset.setTranslateY(150);
 		root.getChildren().add(reset);
 		
-		
 		islandMap = oceanMap.getMap();
 		drawMap();
 		drawIslands(oceanMap.getIslands()); // draws the islands
@@ -87,8 +85,10 @@ public class OceanExplorer extends Application  {
 		oceanStage.show();
 		startSailing();
 		
+		//creates and starts the multi-threading SeaMonsters
 		monsterThread = new Thread(monster);
 		monsterThread.start();
+		
 		//resets the game if the button is pushed
 		reset.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
@@ -271,7 +271,7 @@ public class OceanExplorer extends Application  {
 		winImageView.setX(treasure.getLocation().x * scale);
 		winImageView.setY(treasure.getLocation().y * scale);
 	}
-	
+
 	// this will set the Game over image (ImageView) to the Pane.
 	protected void setGameOverImage() {
 		for(ImageView pirImageView: pirateShipImageViewList) {
@@ -279,17 +279,31 @@ public class OceanExplorer extends Application  {
 				root.getChildren().remove(pirImageView);
 			}
 		}
+		
+//		for(MonsterSprite monst: monster.monsterList) {
+//			if(root.getChildren().contains(monst)) {
+//				root.getChildren().remove(monst);
+//			}
+//		}
 		if(root.getChildren().contains(shipImageView)) {
 			root.getChildren().remove(shipImageView);
 			root.getChildren().add(gameOverImageView);
+			stop();
 		}
 	}
 	
 	protected void setGameWinImage() {
+		for(ImageView pirImageView: pirateShipImageViewList) {
+			if(root.getChildren().contains(pirImageView)) {
+				root.getChildren().remove(pirImageView);		
+			}
+		}
 		if((root.getChildren().contains(shipImageView)) && root.getChildren().contains(treasureImageView)) {
 			root.getChildren().remove(shipImageView);
 			root.getChildren().remove(treasureImageView);
+			
 			root.getChildren().add(winImageView);
+			stop();
 		}
 	}
 	
@@ -318,7 +332,24 @@ public class OceanExplorer extends Application  {
 			pirImageView.setY(pirateShipList.get(counter).getLocation().y * scale);
 			counter++;
 		}
-		
+		for(MonsterSprite monst: monster.monsterList) {
+			Point monstLoc = new Point(monst.getX(),monst.getY());
+			if(ship.getLocation().equals(monstLoc)) {
+				gameOverImageView.setX(monst.getX() * scale);
+				gameOverImageView.setY(monst.getY() * scale);
+			}
+			
+			// removes a life when ship touches Kraken (only when ship has more 1 or more lives)
+			if(ship.getLocation().equals(monstLoc) && ship.getLives() > 0) {
+				ship.removeOneLife();
+			}
+			
+			//check for "end game" qualifications
+			else if(ship.getLocation().equals(monstLoc) && ship.lives == 0) {
+				setGameOverImage();
+				endGame = true;
+			}
+		}
 		for(PirateShip pir: pirateShipList) {
 			if(ship.getLocation().equals(pir.getLocation())){
 				gameOverImageView.setX(pir.getLocation().x * scale);
