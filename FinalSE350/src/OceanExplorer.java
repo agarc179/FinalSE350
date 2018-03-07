@@ -252,21 +252,18 @@ public class OceanExplorer extends Application  {
 		winImageView.setX(treasure.getLocation().x * scale);
 		winImageView.setY(treasure.getLocation().y * scale);
 	}
-	
-//  loads the images for the Sea Monster
-//	public void loadMonstImage() {
-//	monstImage = new Image("kraken.png", scale, scale, true, true);
-//	monstImageView = new ImageView(monstImage);
-//	monstImageView.setX(MonsterSprite.getX() * scale);
-//	monstImageView.setY(MonsterSprite.getY() * scale);
-//}
 
 	// this will set the Game over image (ImageView) to the Pane.
 	protected void setGameOverImage() {
 		for(ImageView pirImageView: pirateShipImageViewList) {
 			if(root.getChildren().contains(pirImageView)) {
 				root.getChildren().remove(pirImageView);
-				stop();
+			}
+		}
+		
+		for(MonsterSprite monst: monster.monsterList) {
+			if(root.getChildren().contains(monst)) {
+				root.getChildren().remove(monst);
 			}
 		}
 		if(root.getChildren().contains(shipImageView)) {
@@ -277,6 +274,11 @@ public class OceanExplorer extends Application  {
 	}
 	
 	protected void setGameWinImage() {
+		for(ImageView pirImageView: pirateShipImageViewList) {
+			if(root.getChildren().contains(pirImageView)) {
+				root.getChildren().remove(pirImageView);		
+			}
+		}
 		if((root.getChildren().contains(shipImageView)) && root.getChildren().contains(treasureImageView)) {
 			root.getChildren().remove(shipImageView);
 			root.getChildren().remove(treasureImageView);
