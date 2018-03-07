@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-class MonsterSprite implements OceanSectionInter{
+class MonsterSprite{
 	int x;
 	int y;
 	Circle monst;
@@ -58,10 +58,5 @@ class MonsterSprite implements OceanSectionInter{
 		monst.setCenterY(y*scalingFactor + (scalingFactor/2));
 	}
 
-	@Override
-	public boolean inSetion() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 }

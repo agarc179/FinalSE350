@@ -261,11 +261,11 @@ public class OceanExplorer extends Application  {
 			}
 		}
 		
-		for(MonsterSprite monst: monster.monsterList) {
-			if(root.getChildren().contains(monst)) {
-				root.getChildren().remove(monst);
-			}
-		}
+//		for(MonsterSprite monst: monster.monsterList) {
+//			if(root.getChildren().contains(monst)) {
+//				root.getChildren().remove(monst);
+//			}
+//		}
 		if(root.getChildren().contains(shipImageView)) {
 			root.getChildren().remove(shipImageView);
 			root.getChildren().add(gameOverImageView);
