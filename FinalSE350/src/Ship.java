@@ -11,6 +11,7 @@ public class Ship implements Subject, Power, GamePiece {
 	int value;
 	OceanMap oceanMap;
 	int lives;
+	int key;
 
 	List<Observer> observers = new LinkedList<Observer>();
 	ArrayList<SpecialPowerDecorator> decoratorList = new ArrayList<SpecialPowerDecorator>();
@@ -68,6 +69,14 @@ public class Ship implements Subject, Power, GamePiece {
 	
 	public void addDecorator(SpecialPowerDecorator specialItem) {
 		decoratorList.add(specialItem);
+	}
+	
+	public void addKey() {
+		key += 1;
+	}
+	
+	public int getKeyValue() {
+		return key;
 	}
 	
 	public void addOneLife() {

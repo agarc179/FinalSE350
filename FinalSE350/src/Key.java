@@ -1,10 +1,10 @@
 import java.awt.Point;
 import java.util.Random;
 
-public class Coin extends SpecialPowerDecorator implements GamePiece {
-	
-	int xCell; // x coordinate for coin
-	int yCell; // y coordinate for coin
+public class Key extends SpecialPowerDecorator implements GamePiece {
+
+	int xCell; // x coordinate for key
+	int yCell; // y coordinate for key
 	Random rand = new Random();
 	OceanMap oceanMap;
 	Ship ship;
@@ -12,45 +12,51 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 	
 	Power powerUp;
 	
-	// constructor
-	public Coin(Power power) {
+	public Key(Power power) {
 		powerUp = power;
 		oceanMap = OceanMap.getInstance(28);
 		do {
 			xCell = rand.nextInt(oceanMap.N);
 			yCell = rand.nextInt(oceanMap.N);
-			
-		}while(oceanMap.getCoordinateValue(xCell, yCell) == 1 || oceanMap.getCoordinateValue(xCell, yCell) == 2);
+		}while(oceanMap.getCoordinateValue(xCell, yCell) == 1 || oceanMap.getCoordinateValue(xCell, yCell) == 2
+				|| oceanMap.getCoordinateValue(xCell, yCell) == 3);
 	}
 	
-
+	
+	
 	@Override
 	public String getDescription() {
-		return "*";
+		// TODO Auto-generated method stub
+		return "Key";
 	}
+
+
 
 	@Override
 	public void power() {
 		if(powerUp instanceof Ship) {
-			((Ship) powerUp).addOneLife();
+			((Ship) powerUp).addKey();
 		}
 	}
-	
+
+
+
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public Point getLocation() {
 		return new Point(xCell,yCell);
 	}
-	
+
 	@Override
-	// sets the coin coordinates with a value in the board
 	public void setCoordinateValue(int x, int y, int value) {
 		this.value = value;
 		oceanMap.oceanGrid[x][y] = value;
+		
 	}
 
 	@Override
@@ -62,10 +68,5 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 	public GamePiece getObject() {
 		return this;
 	}
-
-
-	
-	
-	
 
 }

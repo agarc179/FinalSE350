@@ -10,6 +10,7 @@ import java.util.Random;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,16 +22,17 @@ public class OceanExplorer extends Application  {
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
 	Pane root;
-	Button button;
+	Label livesLabel, keyLabel;
 	Button reset;
 	Ship ship;
 	Coin coin;
+	Key key;
 	Treasure treasure;
 	Scene scene;
 	Monster monster;
 	Thread monsterThread;
-	Image shipImage, bigPirateShipImage, smallPirateShipImage, gameOverImage, coinImage, treasureImage, winImage;
-	ImageView shipImageView, bigPirateShipImageView, smallPirateShipImageView, gameOverImageView, coinImageView, treasureImageView, winImageView;
+	Image shipImage, bigPirateShipImage, smallPirateShipImage, gameOverImage, coinImage, keyImage, treasureImage, winImage;
+	ImageView shipImageView, bigPirateShipImageView, smallPirateShipImageView, gameOverImageView, coinImageView, keyImageView, treasureImageView, winImageView;
 	OceanMap oceanMap = OceanMap.getInstance(dimensions);
 	boolean endGame = false;
 	int[][] islandMap;
@@ -58,16 +60,22 @@ public class OceanExplorer extends Application  {
 		monster = new Monster(scale);
 		//monster.addToMap(root.getChildren());
 		
-		//adds the lives display button
-		button = new Button("Lives: 1");
-		button.setTranslateX(723);
-		button.setTranslateY(50);
-		root.getChildren().add(button);
+		//adds the lives display Label
+		livesLabel = new Label("Lives: 1");
+		livesLabel.setTranslateX(723);
+		livesLabel.setTranslateY(50);
+		root.getChildren().add(livesLabel);
+		
+		//adds the key display Label
+		keyLabel = new Label("Key: 0");
+		keyLabel.setTranslateX(723);
+		keyLabel.setTranslateY(100);
+		root.getChildren().add(keyLabel);
 		
 		//adds the reset button and enables the reset of the game
 		reset = new Button("Reset Game");
-		reset.setTranslateX(710);
-		reset.setTranslateY(100);
+		reset.setTranslateX(705);
+		reset.setTranslateY(150);
 		root.getChildren().add(reset);
 		
 		
@@ -98,8 +106,9 @@ public class OceanExplorer extends Application  {
 		loadPirateShipImage(); 
 		loadTreasuresImage(); 
 		loadCoinImage(); 
+		loadKeyImage();
 		loadGameOverImage();
-		loadWinImage(); 
+		loadWinImage();
 		
 		// set current images (ImageView) to the Pane
 		root.getChildren().add(shipImageView);
@@ -114,6 +123,8 @@ public class OceanExplorer extends Application  {
 			root.getChildren().add(coinImageView);
 		}
 		
+		root.getChildren().add(keyImageView);
+		
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -123,7 +134,6 @@ public class OceanExplorer extends Application  {
 	}
 	
 	public void resetGame() {
-	
 	}
 
 	public void drawMap() {
@@ -181,6 +191,7 @@ public class OceanExplorer extends Application  {
 			coinList.add(coin);
 		}
 		treasure = new Treasure();
+		key = new Key(ship);
 		
 	}
 
@@ -237,6 +248,14 @@ public class OceanExplorer extends Application  {
 		}
 	}
 	
+	public void loadKeyImage() {
+		keyImage = new Image("key.png", scale, scale, false, false);
+		keyImageView = new ImageView(keyImage);
+		keyImageView.setX(key.getLocation().x * scale);
+		keyImageView.setY(key.getLocation().y * scale);
+		key.setCoordinateValue(key.getLocation().x, key.getLocation().y, 7);
+	}
+	
 	// method to load the game over image
 	public void loadGameOverImage() {
 		gameOverImage = new Image("game_over.png", scale, scale, true, true);
@@ -281,6 +300,13 @@ public class OceanExplorer extends Application  {
 		}
 	}
 	
+	// removes key image from pane 
+		protected void removeKeyImage(){
+			if((root.getChildren().contains(keyImageView))) {
+				root.getChildren().remove(keyImageView);
+			}
+		}
+	
 	//updates image location displayed on the map after things move inside the singleton map
 	protected void updateImageLocation() {
 		shipImageView.setX(ship.getLocation().x * scale);
@@ -304,7 +330,7 @@ public class OceanExplorer extends Application  {
 				ship.removeOneLife();
 			}
 			// Check for "end of game"! (Ship has 0 lives) 
-			else if(ship.getLocation().equals(pir.getLocation()) && ship.lives == 0) {
+			else if(ship.getLocation().equals(pir.getLocation()) && ship.getLives() == 0) {
 				setGameOverImage();
 				endGame = true;
 			}
@@ -322,16 +348,27 @@ public class OceanExplorer extends Application  {
 			}
 		}
 		
+		// adds power when ship collects the key
+		if(ship.getLocation().equals(key.getLocation())) {
+			if(key.getValue() == 7) {
+				removeKeyImage();
+				key.power();
+				key.setCoordinateValue(key.getLocation().x, key.getLocation().y, 0);
+			}
+		}
+		
 		// wins game
-		if(ship.getLocation().equals(treasure.getLocation())) {
+		if((ship.getLocation().equals(treasure.getLocation())) && ship.getKeyValue() == 1) {
 			setGameWinImage();
 			endGame = true;
 		}
 		
-		button.setText("Lives: " + Integer.toString(ship.getLives()));
+		livesLabel.setText("Lives: " + Integer.toString(ship.getLives()));
+		keyLabel.setText("Key: " + Integer.toString(ship.getKeyValue()));
 		
 		oceanMap.displayMap(); // testing purposes
-		System.out.println(ship.getLives()); // testing purposes
+		System.out.println(ship.getLives() + " lives"); // testing purposes
+		System.out.println(ship.getKeyValue() + " key"); // testing purposes
 		
 	}
 
