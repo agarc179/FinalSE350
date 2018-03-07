@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -22,8 +23,7 @@ public class OceanExplorer extends Application  {
 	final int dimensions = 28; // creating a 28x28 maps
 	final int scale = 25; // Scale everything by 25. You can experiment here. 
 	Pane root;
-	Button button;
-	Button reset;
+	Button button,reset,exit;
 	Ship ship;
 	Coin coin;
 	Treasure treasure;
@@ -69,6 +69,11 @@ public class OceanExplorer extends Application  {
 		reset.setTranslateY(100);
 		root.getChildren().add(reset);
 		
+		exit = new Button("Exit Game");
+		exit.setTranslateX(710);
+		exit.setTranslateY(670);
+		root.getChildren().add(exit);
+		
 		islandMap = oceanMap.getMap();
 		drawMap();
 		drawIslands(oceanMap.getIslands()); // draws the islands
@@ -82,10 +87,10 @@ public class OceanExplorer extends Application  {
 		monsterThread.start();
 		
 		//resets the game if the button is pushed
-		reset.setOnAction(new EventHandler <ActionEvent>(){
+		exit.setOnAction(new EventHandler <ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-				resetGame();
+				exitGame();
 			}
 		});
 		// places GamePieces
@@ -122,8 +127,15 @@ public class OceanExplorer extends Application  {
 		monsterThread.stop();
 	}
 	
-	public void resetGame() {
-	
+//	public void resetGame() {
+//		root.getChildren().clear();
+//		
+//		new OceanExplorer();
+//		
+//	}
+	public void exitGame() {
+		Platform.exit();
+		System.exit(0);
 	}
 
 	public void drawMap() {

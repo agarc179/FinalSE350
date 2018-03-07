@@ -21,8 +21,8 @@ public class Monster implements Runnable {
 			do {
 			x = rand.nextInt(28);
 			y = rand.nextInt(28);
-			}while(oceanMap.getCoordinateValue(x, y) == 1);
-			monsterList[i] = new MonsterSprite(x,y,scalingFactor); //causes Krakens to no longer spawn on islands
+			}while(oceanMap.getCoordinateValue(x, y) == 1);//causes Krakens to no longer spawn on islands
+			monsterList[i] = new MonsterSprite(x,y,scalingFactor); 
 		}
 		this.radius = 10;
 		this.scalingFactor = scalingFactor;
