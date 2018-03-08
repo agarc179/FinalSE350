@@ -34,6 +34,10 @@ public class OceanMap {
 		return oceanGrid;
 	}
 	
+	public int getMapLength() {
+		return oceanGrid.length;
+	}
+	
 	// returns the value of the Coordinate
 	public int getCoordinateValue(int x, int y) {
 		return oceanGrid[x][y];

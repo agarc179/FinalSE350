@@ -164,14 +164,14 @@ public class OceanExplorer extends Application  {
 		PirateShipFactory bigPirateShipFactory = new BigPirateShipFactory();
 		PirateShipFactory smallPirateShipFactory = new SmallPirateShipFactory();
 		
-		numOfBigPirateShips = 6; // can change how many big pirates to generate
+		numOfBigPirateShips = 8; // can change how many big pirates to generate
 		for(int i = 0; i < numOfBigPirateShips; i++) {
 			PirateShip bigPirateShip = bigPirateShipFactory.buildPirateShip("BigPirateShip");
 			
 			pirateShipList.add(bigPirateShip); // add to pirateShipList new BigPirateShips
 		}
 		
-		numOfSmallPirateShips = 3; // can change how many small pirates to generate
+		numOfSmallPirateShips = 4; // can change how many small pirates to generate
 		for(int i = 0; i < numOfSmallPirateShips; i++) {
 			PirateShip smallPirateShip = smallPirateShipFactory.buildPirateShip("SmallPirateShip");
 			
@@ -185,7 +185,7 @@ public class OceanExplorer extends Application  {
 	
 	// puts the decorator power and the treasure in the Map
 	public void placeTreasures() {
-		numOfCoins = 3; // number of coins to be created
+		numOfCoins = 6; // number of coins to be created
 		for(int i = 0; i < numOfCoins; i++) {
 			coin = new Coin(ship);
 			coinList.add(coin);

@@ -33,7 +33,7 @@ public class Ship implements Subject, Power, GamePiece {
 
 	// move to the right
 	public void goEast() {
-		if(xCell < oceanMap.getMap().length -1) {
+		if(xCell < oceanMap.getMapLength() -1) {
 			if(oceanMap.getCoordinateValue(xCell+1, yCell) != 1)
 				xCell++;
 		}
@@ -60,7 +60,7 @@ public class Ship implements Subject, Power, GamePiece {
 
 	// move down
 	public void goSouth() {
-		if(yCell < oceanMap.getMap().length - 1) {
+		if(yCell < oceanMap.getMapLength() - 1) {
 			if(oceanMap.getCoordinateValue(xCell, yCell+1) != 1)
 				yCell++;
 		}
