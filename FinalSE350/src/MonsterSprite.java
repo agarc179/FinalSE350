@@ -32,20 +32,24 @@ class MonsterSprite{
 		return monst;
 	}
 	
+	// set X
 	void setX(int x){
 		this.x = x;
 		setPositionX(x);
 	}
 	
+	// set Y
 	void setY(int y){
 		this.y = y;
 		setPositionY(y);
 	}
 	
+	// return x
 	int getX() {
 		return x;
 	}
 	
+	// return y
 	int getY() {
 		return y;
 	}

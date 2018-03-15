@@ -18,7 +18,7 @@ public class Treasure implements GamePiece {
 		}while(oceanMap.getCoordinateValue(xCell, yCell) == 1 || oceanMap.getCoordinateValue(xCell, yCell) == 2 
 				|| oceanMap.getCoordinateValue(xCell, yCell) == 3 );
 	}
-
+	// treasure doesn't move
 	@Override
 	public void move() {
 		
@@ -35,6 +35,7 @@ public class Treasure implements GamePiece {
 		return this;
 	}
 
+	// set coordinate value for treasure
 	@Override
 	public void setCoordinateValue(int x, int y, int value) {
 		this.value = value;

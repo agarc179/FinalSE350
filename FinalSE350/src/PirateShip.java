@@ -1,6 +1,7 @@
 import java.awt.Point;
 import java.util.Random;
 
+// abstract class for Pirate ship
 public abstract class PirateShip implements Observer, GamePiece {
 	final int dimensions = 28;
 	Point shipPosition;

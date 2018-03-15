@@ -23,12 +23,13 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 		}while(oceanMap.getCoordinateValue(xCell, yCell) == 1 || oceanMap.getCoordinateValue(xCell, yCell) == 2);
 	}
 	
-
+	
 	@Override
 	public String getDescription() {
 		return "*";
 	}
 
+	// Method of the power to add life's
 	@Override
 	public void power() {
 		if(powerUp instanceof Ship) {
@@ -36,11 +37,13 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 		}
 	}
 	
+	// coin doesn't move
 	@Override
 	public void move() {
 		// TODO Auto-generated method stub	
 	}
 
+	// returns the Point Location
 	@Override
 	public Point getLocation() {
 		return new Point(xCell,yCell);
@@ -53,6 +56,7 @@ public class Coin extends SpecialPowerDecorator implements GamePiece {
 		oceanMap.oceanGrid[x][y] = value;
 	}
 
+	// get value
 	@Override
 	public int getValue() {
 		return value;

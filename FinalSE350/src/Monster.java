@@ -16,6 +16,8 @@ public class Monster implements Runnable {
 	int xMove, yMove,x,y;
 	Point move;
 	MonsterSprite[] monsterList = new MonsterSprite[10];
+	
+	// constructor 
 	public Monster(int scalingFactor) {
 		for(int i = 0; i < monsterList.length; i++) {
 			do {

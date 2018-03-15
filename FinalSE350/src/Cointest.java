@@ -2,8 +2,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+// testing the coin class
 public class Cointest {
 
+	// test the power up
 	@Test
 	public void testPowerUp() {
 		Ship ship = new Ship();
@@ -11,6 +13,7 @@ public class Cointest {
 		assertTrue(coin.powerUp instanceof Ship);
 	}
 	
+	// test get description
 	@Test
 	public void testGetDescription() {
 		Ship ship = new Ship();
@@ -18,6 +21,7 @@ public class Cointest {
 		assertEquals(coin.getDescription(), "*");
 	}
 	
+	// test the location of the coin
 	@Test
 	public void testGetLocation() {
 		Ship ship = new Ship();
@@ -25,6 +29,7 @@ public class Cointest {
 		assertTrue(coin.getLocation().x == coin.xCell && coin.getLocation().y == coin.yCell);
 	}
 	
+	// test set coordinates Value
 	@Test
 	public void testSetCoordinateValue() {
 		Ship ship = new Ship();
@@ -33,6 +38,7 @@ public class Cointest {
 		assertEquals(coin.getValue(), 3);
 	}
 	
+	// test the object 
 	@Test
 	public void testGetObject() {
 		Ship ship = new Ship();

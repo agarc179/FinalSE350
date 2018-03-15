@@ -2,6 +2,7 @@ import java.awt.Point;
 
 public class SmallPirateShip extends PirateShip {
 
+	// constructor
 	public SmallPirateShip() {
 		this.oceanMap = OceanMap.getInstance(dimensions);
 		name = "Small Pirate Ship";
@@ -60,17 +61,20 @@ public class SmallPirateShip extends PirateShip {
 		}
 	}
 
+	// returns Point location
 	@Override
 	public Point getLocation() {
 		return new Point(xCell, yCell);
 	}
 
+	// set coordinate value
 	@Override
 	public void setCoordinateValue(int x, int y, int value) {
 		this.value = value;
 		oceanMap.oceanGrid[x][y] = value;
 	}
 
+	
 	@Override
 	public int getValue() {
 		return value;
@@ -81,6 +85,7 @@ public class SmallPirateShip extends PirateShip {
 		return this;
 	}
 
+	// updates the pirate ship 
 	@Override
 	public void update(Ship ship) {
 		if(ship instanceof Ship) {

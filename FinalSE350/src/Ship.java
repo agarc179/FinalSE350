@@ -93,12 +93,14 @@ public class Ship implements Subject, Power, GamePiece {
 		}
 	}
 
+	// register to observer
 	@Override
 	public void registerObserver(Observer o) {
 		observers.add(o);
 
 	}
 
+	// remove from observer
 	@Override
 	public void removeObserver(Observer o) {
 		if(observers.contains(o)) {
@@ -107,6 +109,7 @@ public class Ship implements Subject, Power, GamePiece {
 
 	}
 
+	// notify observer
 	@Override
 	public void notifyObserver() {
 		for(Observer pirateShipObserver: observers) {

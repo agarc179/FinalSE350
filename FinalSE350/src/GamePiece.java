@@ -1,5 +1,6 @@
 import java.awt.Point;
 
+// Game piece interface, most of the game pieces will implement this interface
 public interface GamePiece {
 	
 	public void move();
